@@ -54,4 +54,16 @@ class ProvidersController < ApplicationController
 
     render nothing: true, status: :ok
   end
+
+  def turn_on
+    Provider.update_all(top_on: true)
+
+    render nothing: true, status: :ok
+  end
+
+  def turn_off
+    Provider.update_all(top_on: false)
+
+    render nothing: true, status: :ok
+  end
 end

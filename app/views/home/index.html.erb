@@ -3,10 +3,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Include Providers</title>
+    <title>Управление Провайдерами</title>
 
     <%= stylesheet_link_tag 'bootstrap.min.css', 'bootstrap-theme.min.css', 'grid-0.4.3.min.css' %>
     <%= javascript_include_tag 'jquery-2.1.3.min.js', 'bootstrap.min.js', 'grid-0.4.3.min.js' %>
+
+   <style type="text/css">
+     .provider_actions .btn {
+       margin-right: 10px;
+     }
+
+     .provider_search_box {
+        margin-left: 15px;
+     }
+   </style>
 
     <script type="text/javascript">
 
@@ -110,6 +120,35 @@
                 grid.reload({ searchString: $("#search").val() });
             }
 
+            // Turn on all providers top on
+
+            function TurnOnAllProviders() {
+                $.ajax({
+                    url: "providers/turn_on", type: "POST"
+                    // url: "Home/TurnOn", type: "POST"
+                })
+                .done(function () {
+                    grid.reload();
+                })
+                .fail(function () {
+                    alert("Ошибка включения!");
+                });
+            }
+
+            // Turn off all providers top off
+
+            function TurnOffAllProviders() {
+                $.ajax({
+                    url: "providers/turn_off", type: "POST"
+                    // url: "Home/TurnOff", type: "POST"
+                })
+                .done(function () {
+                    grid.reload();
+                })
+                .fail(function () {
+                    alert("Ошибка выключения!");
+                });
+            }
 
             // Init Bootrstap Grid plugin
 
@@ -143,6 +182,10 @@
 
             $("#btnAddProvider").on("click", ShowAddProviderModal);
 
+            $("#btnTurnOnAllProviders").on("click", TurnOnAllProviders);
+
+            $("#btnTurnOffAllProviders").on("click", TurnOffAllProviders);
+
             $("#btnSaveProvider").on("click", SaveProvider);
 
             $("#btnSearch").on("click", SearchProviders);
@@ -155,26 +198,37 @@
 <body>
 
     <div class="container fill">
-        <h2>Include Providers</h2>
+        <h2>Управление провайдерами</h2>
         <br />
         <div class="row">
             <div class="row">
                 <div class="col-md-3">
-                    <div class="input-group">
+                    <div class="input-group provider_search_box">
                         <input type="text" id="search" class="form-control"
                                placeholder="Search for...">
                         <span class="input-group-btn">
                             <button type="button" id="btnSearch" class="btn
 btn-default">
-                                Go!
+                                Поиск
                             </button>
                         </span>
                     </div>
                 </div>
-                <div class="col-md-9">
+
+                <div class="col-md-9 provider_actions">
                     <button type="button" id="btnAddProvider" class="btn
 btn-default pull-right">
-                        Add New Provider
+                        Добавить Провайдера
+                    </button>
+
+                    <button type="button" id="btnTurnOffAllProviders" class="btn
+btn-default pull-right">
+                        Выключить все
+                    </button>
+
+                    <button type="button" id="btnTurnOnAllProviders" class="btn
+btn-default pull-right">
+                        Включить все
                     </button>
                 </div>
             </div>
@@ -196,23 +250,23 @@ btn-default pull-right">
                             data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">Provider</h4>
+                    <h4 class="modal-title" id="myModalLabel">Провайдер</h4>
                 </div>
                 <div class="modal-body">
                     <form method="POST">
                         <input type="hidden" id="s_id" />
                         <div class="form-group">
-                            <label for="s_name">s_name</label>
+                            <label for="s_name">Имя</label>
                             <input type="text" class="form-control"
                                    id="s_name" placeholder="s_name">
                         </div>
                         <div class="form-group">
-                            <label for="s_code">s_code</label>
+                            <label for="s_code">Code</label>
                             <input type="text" class="form-control"
                                    id="s_code" placeholder="s_code">
                         </div>
                         <div class="form-group">
-                            <label for="s_top_on">s_top_on</label>
+                            <label for="s_top_on">Статус</label>
                             <input type="text" class="form-control"
                                    id="s_top_on" placeholder="s_top_on">
                         </div>
@@ -221,11 +275,11 @@ btn-default pull-right">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">
-                        Close
+                        Отменить
                     </button>
                     <button type="button" id="btnSaveProvider" class="btn
 btn-primary">
-                        SaveProvider
+                        Сохранить
                     </button>
                 </div>
             </div>
