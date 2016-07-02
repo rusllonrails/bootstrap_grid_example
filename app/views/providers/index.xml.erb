@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Providers>
+<% Provider.all.each do |provider| %>
+  <Provider>
+    <s_id><%= provider.id %></s_id>
+    <s_name><%= provider.name %></s_name>
+    <s_code><%= provider.code %></s_code>
+    <s_top_on><%= provider.top_on ? '1' : '0' %></s_top_on>
+  </Provider>
+<% end %>
+</Providers>
